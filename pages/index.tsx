@@ -1,11 +1,12 @@
 // import '../styles/Home.module.css'
+import React, { useState } from 'react'
 import Image from 'material-ui-image';
 import { isMobile } from "react-device-detect";
 import { AutoRotatingCarousel, Slide } from "material-auto-rotating-carousel";
 
 import ReactPlayer from 'react-player'
 
-import { Container, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 import Background from "../assets/banniere.jpg";
 
@@ -31,12 +32,16 @@ const mockReleases = [
   },
 ];
 
+
 const useStyles = makeStyles((theme) => ({
   sectionContent: {
     zIndex: 5,
+    width: '80vh',
+    height: '80vh',
   },
   embeddedElement: {
-    width: '100%',
+    maxWidth: '330px',
+    maxHeight: '330px',
   },
   sectionContainer: {
     maxHeight: '100vh',
@@ -55,12 +60,22 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hiden',
     zIndex: 0,
   },
+  mediaContent: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  }
 
 }));
 
 
+
+
 export default function Home() {
   const classes = useStyles();
+
+  const [isCarouselOpen, setIsCarouselOpen] = useState();
 
   return (
     <div className={classes.sectionContainer}>
@@ -70,35 +85,45 @@ export default function Home() {
         cover
       />
       <AutoRotatingCarousel
-        label="Get started"
-        // autoplay
-        open
-        mobile={isMobile}
-        className={classes.sectionContent}
+        autoplay={ false }
+        open={ isCarouselOpen }
+        mobile={ isMobile }
+        className={ classes.sectionContent }
+
+      // containerStyle={{width: '80vh', height: '80vh'}}
       >
         {
           mockReleases.map(release => (
             <Slide
               media={
-                <>
-                   <img src="http://www.icons101.com/icon_png/size_256/id_79394/youtube.png" /> 
-                  <ReactPlayer 
+                <div className={classes.mediaContent}>
+                  <ReactPlayer
+                    url={release.soundcloud}
                     className={classes.embeddedElement}
-                    url={release.soundcloud} 
+                  />
+                  <ReactPlayer
+                    url={release.youtube}
+                    className={classes.embeddedElement}
+                  />
+
+
+                  {/* <ReactPlayer
+                    className={classes.embeddedElement}
+                    url={release.soundcloud}
                     config={{
-                      soundcloud:{
+                      soundcloud: {
                         options: {
-                          show_artwork: false,
-                          buying: 'false',
+                          showArtwork: false,
+                          buying: false,
                           color: '#000000',
                           sharing: 'true',
                           show_user: 'true',
                         },
                       },
                     }}
-                  />
-                  <ReactPlayer url={release.youtube} />
-                </>
+                  /> */}
+
+                </div>
               }
               mediaBackgroundStyle={{ backgroundColor: '#000000' }}
               style={{ backgroundColor: '#000000' }}
@@ -110,9 +135,6 @@ export default function Home() {
 
 
       </AutoRotatingCarousel>
-      {/* <Container className={classes.section} >
-           YOOOOOO
-        </Container> */}
 
     </div>
   )
