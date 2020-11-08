@@ -1,53 +1,55 @@
 import React from 'react'
 import { makeStyles, IconButton } from '@material-ui/core';
-import { ArrowDownward } from '@material-ui/icons';
+import { ArrowUpward } from '@material-ui/icons';
 import { animateScroll } from 'react-scroll'
 
 
 
 const useStyles = makeStyles((theme) => ({
     downScrollButtonDiv: {
+        zIndex: 1500,
         position: 'fixed',
-        zIndex: 100,
-        bottom: '0px',
+        top: '0px',
         left: "50%",
         display: 'flex',
         flexDirection: 'column',
     },
     scrollDownButtonLabel: {
         fontFamily: 'CovidVirus',
-        fontSize: '30px',
+        fontSize: '40px',
+        // textShadow: '-0.2px 0 white, 0 0.2px white, 0.2px 0 white, 0 -0.2px white'
     },
     button: {
         margin: 'auto',
-    }
+    },
 }));
 
-interface ScrollDownButtonParams {
+interface ScrollUpButtonParams {
     onCLick?: Function,
 }
 
 
-export default function ScrollDownButton(props: ScrollDownButtonParams) {
+export default function ScrollUpButton(props: ScrollUpButtonParams) {
     const classes = useStyles();
 
     function handleButtonClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        props.onCLick(event);
+        if (props.onCLick !== undefined) {
+            props.onCLick(event);
+        }
         animateScroll.scrollToBottom();
     }
 
     return (
         <div className={classes.downScrollButtonDiv} >
-            <span className={classes.scrollDownButtonLabel}>CHECK OUT MY WORK!</span>
             <IconButton
                 className={classes.button}
                 aria-label="delete"
                 size="medium"
                 onClick={event => handleButtonClick(event)}
             >
-                <ArrowDownward fontSize="inherit" />
-
+                <ArrowUpward fontSize="inherit" />
             </IconButton>
+            <span className={classes.scrollDownButtonLabel}>GO BACK</span>
         </div>
     );
 }

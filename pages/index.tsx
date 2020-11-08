@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
   },
   backgroundImage: {
-    position: 'fixed',
     minHeight: '100vh',
     minWidth: '100vw',
     maxHeight: '100vh',
@@ -28,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hiden',
     zIndex: 0,
   },
+  scrollDownButton: {
+    zIndex: 100,
+  }
 }));
 
 
@@ -42,18 +44,18 @@ export default function Home() {
 
 
   return (
-    <>
-      <div className={classes.sectionContainer}>
-        <Image
-          src={Background} alt="tBackground image"
-          className={classes.backgroundImage}
-          cover={true.toString()}
-        />
-        <ReleasesCarousel open={isCarouselOpen}/>
-        <ScrollDownButton bottomReference={bottomElement} onCLick={() => setIsCarouselOpen(!isCarouselOpen)} />
+    <div className={classes.sectionContainer}>
+      <Image
+        src={Background} alt="tBackground image"
+        className={classes.backgroundImage}
+        cover={true}
+      />
+      <ReleasesCarousel open={isCarouselOpen} />
+      <ScrollDownButton
+        onCLick={() => setIsCarouselOpen(!isCarouselOpen)} 
+      />
 
-      </div>
-      <div ref={bottomElement} />
-    </>
+    </div>
+
   )
 }
