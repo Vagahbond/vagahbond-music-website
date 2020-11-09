@@ -16,11 +16,18 @@ const useStyles = makeStyles((theme) => ({
     },
     scrollDownButtonLabel: {
         fontFamily: 'CovidVirus',
-        fontSize: '40px',
-        // textShadow: '-0.2px 0 white, 0 0.2px white, 0.2px 0 white, 0 -0.2px white'
+        fontSize: '30px',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        borderRadius: '14px',
+        padding: '5px',
+        //textShadow: '-0.1px 0 white, 0 0.1px white, 0.1px 0 white, 0 -0.1px white'
     },
     button: {
         margin: 'auto',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        borderRadius: '100px', //rounded
+        marginBottom: '10px',
+        marginTop: '10px',
     },
 }));
 
@@ -36,7 +43,7 @@ export default function ScrollUpButton(props: ScrollUpButtonParams) {
         if (props.onCLick !== undefined) {
             props.onCLick(event);
         }
-        animateScroll.scrollToBottom();
+        animateScroll.scrollToTop();
     }
 
     return (

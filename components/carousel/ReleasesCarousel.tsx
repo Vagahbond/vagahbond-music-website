@@ -82,8 +82,9 @@ export default function ReleasesCarousel(props: ReleasesCarouselProps) {
                 />
             }
             {
-                props.open &&
-                <ScrollUpButton />
+                // props.open &&
+                // <ScrollUpButton onCLick={} />
+                //must be simplified
             }
             <AutoRotatingCarousel
                 autoplay={false}
