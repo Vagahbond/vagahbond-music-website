@@ -14,9 +14,12 @@ import { CalendarToday, Album } from '@material-ui/icons';
 
 import Logo from "../../assets/Soundcloud_pic.jpg";
 
+export const NAV_BAR_HEIGHT = 64;
+
 const useStyles = makeStyles(theme => ({
     grow: {
         flexGrow: 1,
+        height: NAV_BAR_HEIGHT,
     },
     title: {
         fontFamily: 'CovidVirus',
