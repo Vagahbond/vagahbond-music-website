@@ -1,9 +1,9 @@
 // import '../styles/Home.module.css'
-import React, { useState, useRef } from 'react'
+import React, { useState,  useEffect } from 'react'
 import ReactPlayer from 'react-player'
 import { makeStyles, IconButton } from '@material-ui/core';
 import { ArrowDownward } from '@material-ui/icons';
-import { animateScroll } from 'react-scroll'
+import Scroll, { animateScroll } from 'react-scroll'
 import { AutoRotatingCarousel, Slide } from 'material-auto-rotating-carousel'
 import { ArrowUpward } from '@material-ui/icons';
 import Image from 'material-ui-image';
@@ -11,6 +11,7 @@ import { isMobile } from "react-device-detect";
 
 import Background from "../assets/banniere.jpg";
 import Background2 from "../assets/banner-2.jpg";
+import { NAV_BAR_HEIGHT } from '../components/nav_bar/NavBar'
 
 const mockReleases = [
   {
@@ -129,7 +130,15 @@ export default function Home() {
   const [isCarouselOpen, setIsCarouselOpen] = useState(false);
   const [currentRelease, setCurrentRelease] = useState(mockReleases[0]);
 
-
+  useEffect(() => {
+    window.addEventListener('scroll', e => {
+      if ( window.pageYOffset >= NAV_BAR_HEIGHT) {
+        setIsCarouselOpen(true);
+      } else {
+        setIsCarouselOpen(false);
+      }
+    });
+  })
 
   return (
     <div className={classes.sectionContainer}>
@@ -208,7 +217,7 @@ export default function Home() {
                 className={classes.downScrollButton}
                 aria-label="delete"
                 size="medium"
-                onClick={() => {animateScroll.scrollToBottom()}
+                onClick={() => animateScroll.scrollToBottom()}
             >
                 <ArrowDownward fontSize="inherit" />
 
