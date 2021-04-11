@@ -1,12 +1,93 @@
 version: "3"
 
+volumes:
+  postgres:
+  soundhive_minio:
+
+networks:
+  backend:
+  frontend:
 
 
 services:
   front:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
     volumes:
       - ./components:/usr/src/app/components
       - ./pages:/usr/src/app/pages
+    networks:
+      - frontend 
+
+  api:
+    build: 
+      context: ./api/
+    ports:
+      - "3031:3000"
+    volumes:
+    - ./api/src:/usr/src/app/src
+    - .api//migrate.sh:/usr/app/src/migrate.sh
+    environment:
+      DATABASE_URL: postgresql://docker:password@db:5432/vagahbond
+      MINIO_ACCESS_KEY: miniokey
+      MINIO_SECRET_KEY: miniosecret
+      MINIO_BUCKET: vagahbond
+    networks:
+      backend:
+      frontend:
+    depends_on:
+      - db
+      - minio
+    command: sh -c "exec npm run start:dev"
+
+  db:
+    image: postgres:13.1-alpine
+    env_file:
+      - api/postgres.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docker -d vagahbond"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+        - postgres:/var/lib/postgresql/data
+    ports: 
+      - "5431:5432"
+    networks: 
+      - backend
+
+  minio:
+    image: minio/minio
+    volumes:
+    - soundhive_minio:/data
+    environment:
+      MINIO_ACCESS_KEY: miniokey
+      MINIO_SECRET_KEY: miniosecret
+    command: server /data
+    ports:
+      - 9001:9000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+    # restart: always
+    networks: 
+      - backend
+      - frontend
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    ports:
+      - 7999:9000
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add myminio http://minio:9000 miniokey miniosecret;
+      /usr/bin/mc mb -p myminio/vagahbond;
+      /usr/bin/mc policy download myminio/vagahbond;
+      exit 0;
+      "
+    networks: 
+      - backend
