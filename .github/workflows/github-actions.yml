@@ -4,32 +4,42 @@ name: CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: 
+  release:
+    types: [published]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
-    strategy:
-        matrix:
-          os: [macOS-latest, windows-latest, ubuntu-latest]
 
     # The type of runner that the job will run on
-    runs-on:  ${{ matrix.os }}
+    runs-on:  ubuntu-latest
     
     
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Login to DEDISTONKS docke registry
+        uses: docker/login-action@v1 
+        with:
+          registry: registry.qtmsheep.com
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
 
       # Runs a single command using the runners shell
-      - name: Build a static image
+      - name: Build a docker image
         run: |
-          npm i
-          npm run build
+          docker build . -t registry.qtmsheep.com/vagahbond/music/front:${{ github.event.release.tag_name }} -t registry.qtmsheep.com/vagahbond/music/api:latest
+          
+          docker push  registry.qtmsheep.com/vagahbond/music/front --all-tags
+
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: 'https://portainer.qtmsheep.com/api/webhooks/5a04f7bc-ef64-4219-b7a5-4e9770d5cb53'
+          method: 'POST'

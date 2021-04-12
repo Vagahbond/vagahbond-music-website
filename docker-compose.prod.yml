@@ -1,10 +1,85 @@
 version: "3"
 
+volumes:
+  postgres:
+  soundhive_minio:
+
+networks:
+  backend:
+  frontend:
+
 services:
   front:
-    build:
-      context: .
-      dockerfile: ./Dockerfile.prod
+    image: registry.qtmsheep.com/vagahbond/music/front:latest
     ports:
-    - "80:80"
-    
+      - "3000:3000"
+    volumes:
+      - ./components:/usr/src/app/components
+      - ./pages:/usr/src/app/pages
+    networks:
+      - frontend 
+
+  api:
+    image: registry.qtmsheep.com/vagahbond/music/api:latest
+    networks:
+      - backend
+      - frontend
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}
+      MINIO_PORT: ${MINIO_PORT}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: ${MINIO_BUCKET}
+    depends_on:
+      - db
+      - minio
+    command: sh -c "exec npm run start:dev"
+
+  db:
+    image: postgres:13.1-alpine
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docker -d vagahbond"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+       - postgres:/var/lib/postgresql/data
+    ports: 
+      - "5431:5432"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    networks: 
+      - backend
+
+  minio:
+    image: minio/minio
+    volumes:
+    - soundhive_minio:/data
+    command: server /data --address ":${MINIO_PORT}" 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${MINIO_PORT}/minio/health/live"]
+    restart: always
+    environment: 
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BROWSER: 'off'
+    networks: 
+      - backend
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add myminio http://minio:${MINIO_PORT} ${MINIO_ACCESS_KEY} ${MINIO_SECRET_KEY};
+      /usr/bin/mc mb -p myminio/${MINIO_BUCKET};
+      /usr/bin/mc policy download myminio/${MINIO_BUCKET};
+      exit 0;
+      "
+    networks: 
+      - backend
