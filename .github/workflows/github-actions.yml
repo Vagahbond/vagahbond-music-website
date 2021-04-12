@@ -34,7 +34,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Build a docker image
         run: |
-          docker build . -t registry.qtmsheep.com/vagahbond/music/front:${{ github.event.release.tag_name }} -t registry.qtmsheep.com/vagahbond/music/api:latest
+          docker build . -t registry.qtmsheep.com/vagahbond/music/front:${{ github.event.release.tag_name }} -t registry.qtmsheep.com/vagahbond/music/front:latest
           
           docker push  registry.qtmsheep.com/vagahbond/music/front --all-tags
 
