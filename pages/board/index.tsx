@@ -8,14 +8,16 @@ export default function Board()
   const [isAuth, setAuth] = useState(false)
 
   useEffect(() => {
-    axios.get('/').
-    then(data => {
-      console.log(data)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  })
+    async function fetchTruc() {
+      try {
+        const { data } = await axios.get('/');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  
+    fetchTruc();
+  });
   console.log(isAuth)
    return (
      <>

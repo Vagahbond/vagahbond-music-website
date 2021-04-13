@@ -4,19 +4,7 @@ import axios from 'axios'
 
 export default function Board()
  {
-
-  const [isAuth, setAuth] = useState(false)
-
-  useEffect(() => {
-    axios.get('/').
-    then(data => {
-      console.log(data)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  })
-  console.log(isAuth)
+    console.log(process.env.API_EXTERNAL_HOST)
    return (
      <>
      <Head>
