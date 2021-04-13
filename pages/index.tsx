@@ -1,230 +1,66 @@
-// import '../styles/Home.module.css'
-import React, { useState,  useEffect } from 'react'
-import ReactPlayer from 'react-player'
-import { makeStyles, IconButton } from '@material-ui/core';
-import { ArrowDownward } from '@material-ui/icons';
-import Scroll, { animateScroll } from 'react-scroll'
-import { AutoRotatingCarousel, Slide } from 'material-auto-rotating-carousel'
-import { ArrowUpward } from '@material-ui/icons';
-import Image from 'material-ui-image';
-import { isMobile } from "react-device-detect";
-
-import Background from "../assets/banniere.jpg";
-import Background2 from "../assets/banner-2.jpg";
-import { NAV_BAR_HEIGHT } from '../components/nav_bar/NavBar'
-
-const mockReleases = [
-  {
-    title: 'Hate',
-    artists: 'Aaskell & Vagahbond',
-    youtube: 'https://www.youtube.com/watch?v=TvFpKbf8HE0',
-    soundcloud: 'https://soundcloud.com/vagabond-music-872243664/aaskell-x-vagahbond-hate',
-    cover: 'https://i1.sndcdn.com/artworks-PVvwb3PveGa0n9rt-m6E6Dg-t500x500.jpg',
-    banner: Background2,
-    description: `A single we made with Aaskell, which ended up beeing the most finished and polished of my tracks.
-     It constitutes a mix between a very classical orchestral music, a thick ambiance, and a wobbly touch with dubstep sounds here and there.`
-  },
-  {
-    title: 'The whalish speech',
-    artists: 'Vagahbond',
-    youtube: 'https://www.youtube.com/watch?v=BrjQRwYSNcU',
-    soundcloud: 'https://soundcloud.com/vagabond-music-872243664/vagahbond-the-whalish-speech',
-    cover: 'https://i1.sndcdn.com/artworks-PVvwb3PveGa0n9rt-m6E6Dg-t500x500.jpg',
-    banner: Background,
-    description: `A calm envelopping ambiance over a soothing rythm much inspired by deep medi artists.`
-  },
-];
-
-
-const useStyles = makeStyles((theme) => ({
-  sectionContainer: {
-    maxHeight: '100vh',
-    maxWidth: '100vw',
-    overflow: 'hidden',
-  },
-  backgroundImage: {
-    minHeight: '100vh',
-    minWidth: '100vw',
-    maxHeight: '100vh',
-    maxWidth: '100vw',
-    right: 0,
-    left: 0,
-    // objectFit: 'cover',
-    overflow: 'hiden',
-    zIndex: 0,
-  },
-  scrollDownButton: {
-    zIndex: 100,
-  },
-  sectionContent: {
-    zIndex: 5,
-    width: '80vh',
-    height: '80vh',
-  },
-  embeddedElement: {
-    maxWidth: '300px',
-    maxHeight: '200px',
-  },
-  mediaContent: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around'
-  },
-  carouselBackgroundImage: {
-    zIndex: 200,
-    position: 'fixed',
-    height: '100vh',
-    width: '100vw',
-    right: 0,
-    left: 0,
-    top: 0,
-    overflow: 'hiden',
-  },
-  upScrollButtonDiv: {
-    zIndex: 1500,
-    position: 'fixed',
-    top: '0px',
-    left: "50%",
-    display: 'flex',
-    flexDirection: 'column',
-},
-upScrollButtonLabel: {
-    fontFamily: 'CovidVirus',
-    fontSize: '30px',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: '14px',
-    padding: '5px',
-    //textShadow: '-0.1px 0 white, 0 0.1px white, 0.1px 0 white, 0 -0.1px white'
-},
-upScrollButton: {
-    margin: 'auto',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: '100px', //rounded
-    marginBottom: '10px',
-    marginTop: '10px',
-},
-downScrollButtonDiv: {
-  position: 'fixed',
-  zIndex: 100,
-  bottom: '0px',
-  left: "50%",
-  display: 'flex',
-  flexDirection: 'column',
-},
-downScrollButtonLabel: {
-  fontFamily: 'CovidVirus',
-  fontSize: '30px',
-},
-downScrollButton: {
-  margin: 'auto',
-}
-}));
-
-
-
+import Head from 'next/head'
+import styles from '../styles/Home.module.css'
 
 export default function Home() {
-  const classes = useStyles();
-
-  const [isCarouselOpen, setIsCarouselOpen] = useState(false);
-  const [currentRelease, setCurrentRelease] = useState(mockReleases[0]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', e => {
-      if ( window.pageYOffset >= NAV_BAR_HEIGHT) {
-        setIsCarouselOpen(true);
-      } else {
-        setIsCarouselOpen(false);
-      }
-    });
-  })
 
   return (
-    <div className={classes.sectionContainer}>
-      <Image
-        src={Background} 
-        cover={true}
-        alt="tBackground image"
-        className={classes.backgroundImage}
-        
-      />
-      {
-        isCarouselOpen &&
-        <Image
-          className={classes.carouselBackgroundImage}
-          src={currentRelease.banner}
-          alt="album cover"
-          cover={true}
-          imageStyle={{
-            position: 'fixed',
-          }}
-        />
-      }
-      {
-        isCarouselOpen &&
-        <div className={classes.upScrollButtonDiv} >
-            <IconButton
-                className={classes.upScrollButton}
-                aria-label="delete"
-                size="medium"
-                onClick={() => animateScroll.scrollToTop()}
-            >
-                <ArrowUpward fontSize="inherit" />
-            </IconButton>
-            <span className={classes.upScrollButtonLabel}>GO BACK</span>
+    <div className={styles.container}>
+      <Head>
+        <title>Create Next App</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className={styles.main}>
+        <h1 className={styles.title}>
+          Welcome to <a href="https://nextjs.org">Next.js!</a>
+        </h1>
+
+        <p className={styles.description}>
+          Get started by editing{' '}
+          <code className={styles.code}>pages/index.js</code>
+        </p>
+
+        <div className={styles.grid}>
+          <a href="https://nextjs.org/docs" className={styles.card}>
+            <h3>Documentation &rarr;</h3>
+            <p>Find in-depth information about Next.js features and API.</p>
+          </a>
+
+          <a href="https://nextjs.org/learn" className={styles.card}>
+            <h3>Learn &rarr;</h3>
+            <p>Learn about Next.js in an interactive course with quizzes!</p>
+          </a>
+
+          <a
+            href="https://github.com/vercel/next.js/tree/master/examples"
+            className={styles.card}
+          >
+            <h3>Examples &rarr;</h3>
+            <p>Discover and deploy boilerplate example Next.js projects.</p>
+          </a>
+
+          <a
+            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+            className={styles.card}
+          >
+            <h3>Deploy &rarr;</h3>
+            <p>
+              Instantly deploy your Next.js site to a public URL with Vercel.
+            </p>
+          </a>
         </div>
-      }
-      <AutoRotatingCarousel
-        autoplay={false}
-        open={isCarouselOpen}
-        mobile={isMobile}
-        className={classes.sectionContent}
-        onChange={(i) => setCurrentRelease(mockReleases[i])}
-      // containerStyle={{width: '80vh', height: '80vh'}}
-      >
-        {
-          mockReleases.map(release => (
-            <Slide
-              key={release.title}
-              media={
-                <div className={classes.mediaContent}>
-                  <ReactPlayer
-                    url={release.soundcloud}
-                    className={classes.embeddedElement}
-                  />
-                  <ReactPlayer
-                    url={release.youtube}
-                    className={classes.embeddedElement}
-                  />
+      </main>
 
-                </div>
-              }
-              mediaBackgroundStyle={{ backgroundColor: '#000000' }}
-              style={{ backgroundColor: '#000000' }}
-              title={release.title}
-              subtitle={release.description}
-            />
-
-          ))
-        }
-
-
-      </AutoRotatingCarousel>
-      <div className={classes.downScrollButtonDiv} >
-            <span className={classes.downScrollButtonLabel}>CHECK OUT MY WORK!</span>
-            <IconButton
-                className={classes.downScrollButton}
-                aria-label="delete"
-                size="medium"
-                onClick={() => animateScroll.scrollToBottom()}
-            >
-                <ArrowDownward fontSize="inherit" />
-
-            </IconButton>
-        </div>
-
+      <footer className={styles.footer}>
+        <a
+          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Powered by{' '}
+          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
+        </a>
+      </footer>
     </div>
-
   )
 }

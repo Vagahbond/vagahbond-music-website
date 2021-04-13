@@ -29,7 +29,6 @@ services:
       - "3031:3000"
     volumes:
     - ./api/src:/usr/src/app/src
-    - .api//migrate.sh:/usr/app/src/migrate.sh
     environment:
       DATABASE_URL: postgresql://docker:password@db:5432/vagahbond
       MINIO_ACCESS_KEY: miniokey

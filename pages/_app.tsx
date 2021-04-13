@@ -1,42 +1,13 @@
-import React, { useEffect } from 'react';
-
+import { AppProps } from 'next/app'
 import '../styles/globals.css'
-import '../styles/index.css'
+import '../styles/style.css'
 
+import axios from 'axios';
 
-import { CssBaseline, ThemeProvider } from '@material-ui/core';
+axios.defaults.baseURL = 'api:3000';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-import NavBar from '../components/nav_bar/NavBar';
-
-import Home from './index';
-
-import theme from '../styles/theme'
-
-
-
-import { AppProps } from 'next/dist/next-server/lib/router/router';
-
-function MyApp({ Component, pageProps }: AppProps) {
-
-  // useEffect(() => {
-  //   // Remove the server-side injected CSS.
-  //   const jssStyles = document.querySelector('#jss-server-side');
-  //   if (jssStyles) {
-  //     jssStyles.parentElement.removeChild(jssStyles);
-  //   }
-  // }, []);
-
-  return (
-    <>
-      <CssBaseline />
-      <ThemeProvider theme={theme}>
-        <div className="App">
-          <NavBar />
-          <Home {...pageProps} />
-        </div >
-      </ThemeProvider >
-    </>
-  );
+function App({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
 }
-
-export default MyApp
+export default App

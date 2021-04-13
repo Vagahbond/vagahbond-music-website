@@ -4,7 +4,7 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext",
+      "esnext"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -16,20 +16,14 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    // "noImplicitAny": true,
-    // "noImplicitThis": true,
-    // "strictNullChecks": true
+    "jsx": "preserve"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "pages/_app.tsx",
-    "next.config.js"
+    "**/*.tsx"
   ],
   "exclude": [
-    "node_modules",
-    "api"
+    "node_modules"
   ]
 }
