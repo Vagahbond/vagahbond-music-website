@@ -20,7 +20,7 @@ export default function Board()
    return (
      <>
      <Head>
-       Administration panel
+     <title>Create Next App</title>
      </Head>
      Here manage your tracks
      </>
