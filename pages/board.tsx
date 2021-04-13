@@ -22,12 +22,15 @@ export default function Board()
      <Head>
        Administration panel
      </Head>
-        Welcome to the administration panel. <br/>
+     <span className="bg-gray-50">
+     Welcome to the administration panel. <br/>
         you are {
           isAuth ? 
           'connected' :
           'disconnected'
         }.
+     </span>
+        
      </>
    )
  }
