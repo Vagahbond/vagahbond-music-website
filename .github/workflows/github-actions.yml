@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: BUID AND DEPLOY
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -24,7 +24,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: Login to DEDISTONKS docke registry
+      - name: Login to DEDISTONKS docker registry
         uses: docker/login-action@v1 
         with:
           registry: registry.qtmsheep.com
