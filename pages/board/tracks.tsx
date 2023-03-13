@@ -1,16 +1,14 @@
 import Head from 'next/head'
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React from 'react'
 
-export default function Board()
+export default function Tracks()
  {
-    console.log(process.env.API_EXTERNAL_HOST)
    return (
      <>
      <Head>
-     <title>Create Next App</title>
+      <title>Create Next App</title>
      </Head>
-     Here manage your tracks
+      Here manage your tracks
      </>
    )
  }

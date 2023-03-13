@@ -1,41 +1,50 @@
 import Head from 'next/head'
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React from 'react'
+import { fetchHandle, Sender } from '../../lib/fetchConfig';
 
 export default function Board()
  {
 
-  const [isAuth, setAuth] = useState(false)
-
-  useEffect(() => {
-    async function fetchTruc() {
-      try {
-        const { data } = await axios.get('/');
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  
-    fetchTruc();
-  });
-  console.log(isAuth)
    return (
      <>
      <Head>
-       Administration panel
+      <title>Admin board</title>
      </Head>
      <span className="bg-gray-50">
      Welcome to the administration panel. <br/>
-        you are {
-          isAuth ? 
-          'connected' :
-          'disconnected'
-        }.
+        you are connected.
      </span>
         
      </>
    )
  }
+
+ export async function getStaticProps() {
+  try {
+    await fetchHandle.api<{data}>('/', Sender.INTERNAL);
+
+    return {
+      props: {},
+    }
+  } catch (e) {
+    console.log(e);
+
+    if (e.statusCode == 401) {
+      return {
+        redirect: {
+          destination: '/'
+        }
+      }
+    }
+    else {
+      console.error(e)
+    }
+  }
+
+  return {
+    props: {},
+  }
+}
 
 
 

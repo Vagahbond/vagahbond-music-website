@@ -1,4 +1,4 @@
-version: "3"
+version: "3.4"
 
 volumes:
   postgres:
@@ -19,6 +19,7 @@ services:
     volumes:
       - ./components:/usr/src/app/components
       - ./pages:/usr/src/app/pages
+      - ./lib:/usr/src/app/lib
     networks:
       - frontend 
 
